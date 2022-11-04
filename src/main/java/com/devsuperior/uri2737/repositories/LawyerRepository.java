@@ -29,5 +29,28 @@ public interface LawyerRepository extends JpaRepository<Lawyer, Long> {
 			+ "FROM lawyers)"
 			)
 	List<LawyerMinProjection> searchSQL();
+	
+
+	@Query(nativeQuery= true, value="(SELECT name, customers_number AS customersNumber "
+			+ "FROM lawyers "
+			+ "WHERE customers_number = "
+			+ "	(SELECT MAX(customers_number) "
+			+ "			  FROM lawyers "
+			+ "))"		
+			+ "UNION ALL "			
+			+ "(SELECT name, customers_number "
+			+ "FROM lawyers "
+			+ "WHERE customers_number = "
+			+ "(SELECT MIN(customers_number) "
+			+ "			  FROM lawyers "
+			+ ")) "			
+			+ "UNION ALL "
+			+ "(SELECT 'Average', ROUND(AVG(customers_number),0) "
+			+ "FROM lawyers) "
+			+ "UNION ALL "
+			+ "(SELECT 'Sum', SUM(customers_number) "
+			+ "FROM lawyers)"
+			)
+	List<LawyerMinProjection> searchSQL02();
 
 }

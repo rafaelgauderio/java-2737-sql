@@ -34,6 +34,13 @@ public class Uri2737Application implements CommandLineRunner {
 			System.out.println(consultSQL);
 		}
 		
+		List<LawyerMinProjection> list2 = repository.searchSQL02();		
+		List<LawyerMinDTO> result2 = list2.stream().map(law -> new LawyerMinDTO(law)).collect(Collectors.toList());		
+	
+		for(LawyerMinDTO consultSQL : result2) {
+			System.out.println(consultSQL);
+		}
+		
 
 	}
 }
